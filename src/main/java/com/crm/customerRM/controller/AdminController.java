@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.crm.customerRM.entities.Admin;
 import com.crm.customerRM.models.AdminModel;
+
 
 @Controller
 @RequestMapping("/api/admins")
@@ -26,11 +28,11 @@ public class AdminController {
 
     // Handle the login form submission
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, Model model) {
+    public String login(@RequestParam String username, @RequestParam String password, Model model, RedirectAttributes redirectAttributes) {
         try {
             Admin admin = adminmodel.login(username, password);
-            model.addAttribute("admin", admin);
-            return "redirect:/dashboard";  // Redirect to the dashboard after successful login
+            redirectAttributes.addFlashAttribute("admin", admin);  // Pass admin to the dashboard
+            return "redirect:/api/admins/dashboard";  // Redirect to the dashboard
         } catch (Exception e) {
             model.addAttribute("error", true);  // Add an error attribute to show the error message
             return "login";  // Return to the login page with the error message
@@ -38,7 +40,7 @@ public class AdminController {
     }
 
     // Display dashboard page
-    @GetMapping("/dashboard")
+    @RequestMapping("/dashboard")
     public String showDashboard(Model model) {
         // This method is invoked when the user successfully logs in.
         // The admin object is already added to the model in the login method.
