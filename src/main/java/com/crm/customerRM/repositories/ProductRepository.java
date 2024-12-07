@@ -6,4 +6,6 @@ import com.crm.customerRM.entities.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+   // int findQuantityByProductId(Long productId);
+
 }
