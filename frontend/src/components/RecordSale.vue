@@ -39,7 +39,8 @@
   
         <button @click="addItem" type="button">Add Item</button>
   
-        <button type="submit">Submit Sale</button>
+        <!-- Submit Button (Disabled if form is incomplete) -->
+        <button type="submit" :disabled="!isFormValid">Submit Sale</button>
       </form>
     </div>
   </template>
@@ -51,31 +52,29 @@
     data() {
       return {
         sale: {
-          storeId: null,  // Store ID to be selected
-          clientId: null, // Client ID to be selected
+          storeId: null,
+          clientId: null,
           items: [
             {
-              productId: null, // Product ID
-              quantity: 1,     // Quantity
+              productId: null,
+              quantity: 1,
             },
           ],
         },
-        stores: [],  // List of stores
-        clients: [], // List of clients
-        products: [], // List of products
+        stores: [],
+        clients: [],
+        products: [],
       };
     },
     methods: {
-      submitForm() {
-        axios
-          .post('/api/sales', this.sale)
-          .then((response) => {
-            console.log('Sale created successfully:', response.data);
-            alert('Sale Created Successfully');
-          })
-          .catch((error) => {
-            console.error('There was an error creating the sale:', error);
-          });
+      async submitForm() {
+        try {
+          const response = await axios.post('http://localhost:8081/api/sales', this.sale);
+          console.log('Sale created successfully:', response.data);
+          alert('Sale Created Successfully');
+        } catch (error) {
+          console.error('There was an error creating the sale:', error);
+        }
       },
   
       addItem() {
@@ -89,34 +88,32 @@
         this.sale.items.splice(index, 1);
       },
     },
-    created() {
-      // Fetch stores, clients, and products from the backend to populate the dropdowns
-      axios
-        .get('/api/stores')
-        .then((response) => {
-          this.stores = response.data;
-        })
-        .catch((error) => {
-          console.error('Error fetching stores:', error);
-        });
-  
-      axios
-        .get('/api/clients')
-        .then((response) => {
-          this.clients = response.data;
-        })
-        .catch((error) => {
-          console.error('Error fetching clients:', error);
-        });
-  
-      axios
-        .get('/api/products')
-        .then((response) => {
-          this.products = response.data;
-        })
-        .catch((error) => {
-          console.error('Error fetching products:', error);
-        });
+    computed: {
+      isFormValid() {
+        // Check if all required fields are filled and the sale items are valid
+        return (
+          this.sale.storeId &&
+          this.sale.clientId &&
+          this.sale.items.every(item => item.productId && item.quantity > 0)
+        );
+      },
+    },
+    async created() {
+      try {
+        const [clientsResponse, productsResponse] = await Promise.all([
+         //axios.get('http://localhost:8081/api/stores/all'),
+          axios.get('http://localhost:8081/api/clients/all'),
+          axios.get('http://localhost:8081/api/products/all'),
+        ]);
+        
+    //    this.stores = storesResponse.data;
+        this.clients = clientsResponse.data;
+        this.products = productsResponse.data;
+        
+        console.log('Clients:', this.clients);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     },
   };
   </script>
