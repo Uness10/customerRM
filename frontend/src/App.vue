@@ -1,10 +1,26 @@
 <template>
-  <nav>
+  <sidebar v-if="isAuthenticated"/>
+  <nav v-else>
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/about">About</router-link> |
+    <router-link to="/contact">Contact</router-link>
   </nav>
   <router-view/>
 </template>
+
+<script>
+import sidebar from './components/sidebar.vue'
+export default {
+  data() {
+    return {
+      isAuthenticated: true // Set this to true or false based on your authentication logic
+    };
+  },
+  components: {
+    sidebar
+  }
+};
+</script>
 
 <style>
 #app {

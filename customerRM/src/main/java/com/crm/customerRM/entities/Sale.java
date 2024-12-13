@@ -26,6 +26,8 @@ public class Sale {
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
+
+
     // Default Constructor
     public Sale() {
     }
