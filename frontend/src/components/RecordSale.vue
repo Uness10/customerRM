@@ -100,17 +100,16 @@
     },
     async created() {
       try {
-        const [clientsResponse, productsResponse] = await Promise.all([
-         //axios.get('http://localhost:8081/api/stores/all'),
+        const [storesResponse, clientsResponse, productsResponse] = await Promise.all([
+         axios.get('http://localhost:8081/api/stores/all'),
           axios.get('http://localhost:8081/api/clients/all'),
           axios.get('http://localhost:8081/api/products/all'),
         ]);
         
-    //    this.stores = storesResponse.data;
+        this.stores = storesResponse.data;
         this.clients = clientsResponse.data;
         this.products = productsResponse.data;
         
-        console.log('Clients:', this.clients);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

@@ -1,12 +1,11 @@
 package com.crm.customerRM.controller;
 
 import com.crm.customerRM.entities.Product;
+import com.crm.customerRM.models.ProductModel;
 import com.crm.customerRM.repositories.ProductRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,11 +14,21 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductRepository productRepository;
-    @CrossOrigin(origins = "http://localhost:8080")
+    private ProductModel productModel;
 
+    public ProductController(ProductModel productModel) {
+        this.productModel = productModel;
+    }
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/all")
     public List<Product> getProducts() {
-        return productRepository.findAll();
+        return productModel.getAllProducts();
+    }
+
+    @CrossOrigin(origins = "http://localhost:8080")
+    @PostMapping("/add")
+    public Product insertProduct(@RequestBody Product p) {
+        // Save the product to the repository
+        return productModel.createProduct(p);
     }
 }

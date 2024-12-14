@@ -1,7 +1,7 @@
 package com.crm.customerRM.controller;
 
 import com.crm.customerRM.entities.Client;
-import com.crm.customerRM.repositories.ClientRepository;
+import com.crm.customerRM.models.ClientModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,18 +17,18 @@ import java.util.List;
 public class ClientController {
 
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientModel clientModel;
 
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/all")
     public List<Client> getClients() {
-        return clientRepository.findAll();
+        return clientModel.getClients();
     }
 
     @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping("/add")
     public Client insertClient(@RequestBody Client client) {
         // Save the client to the repository
-        return clientRepository.save(client);
+        return clientModel.createClient(client);
     }
 }

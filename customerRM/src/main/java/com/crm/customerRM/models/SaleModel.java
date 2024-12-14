@@ -4,10 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.crm.customerRM.entities.Sale;
 import com.crm.customerRM.repositories.SaleRepository;
 
+@Service
 public class SaleModel {
     @Autowired
     private final SaleRepository repo ; 
@@ -19,7 +21,7 @@ public class SaleModel {
     public Sale createSale(Sale sale) {
         return repo.save(sale);
     }
-    public List<Sale> getSales() {
+    public List<Sale> getAllsales() {
         return repo.findAll();
     }
     public List<Sale> getSalesByClientId(Long clientId) {

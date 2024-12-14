@@ -52,12 +52,16 @@ export default {
   methods: {
     submitCustomer() {
       // Send customer data to backend
-      fetch("http://localhost:8080/api/customers", {
+      const customer = {
+        name: this.customer.name,
+        contactInfo: this.customer.email + " " + this.customer.phone,
+      };
+      fetch("http://localhost:8081/api/clients/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(this.customer),
+        body: JSON.stringify(customer),
       })
         .then((response) => {
           if (!response.ok) throw new Error("Failed to add customer");
