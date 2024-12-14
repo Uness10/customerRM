@@ -19,11 +19,13 @@ public class StoreModel {
     public List<Store> getStores() {
         return repo.findAll();
     }
-    public List<InventoryItem> getInventoriesByStore(Long id) {
+    public List<InventoryItem> getInventoriesByStoryId(Long id) {
         return repo.findById(id).get().getInventory();
     }
+
     public Store createStore(Store store) {
         return repo.save(store);
     }
+
     
 }

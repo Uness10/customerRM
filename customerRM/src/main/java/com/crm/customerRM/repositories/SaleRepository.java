@@ -10,7 +10,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
     List<Sale> findByDateBetween(Date startDate, Date endDate);
 
-    List<Sale> findByItemsProductId(Long productId);
+   // List<Sale> findByItemsProductId(Long productId);
 
     long countByClientId(Long clientId);
 

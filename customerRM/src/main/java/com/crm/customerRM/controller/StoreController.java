@@ -26,7 +26,7 @@ public class StoreController {
 
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/all")
-    public List<Store> getStores() {
+    public List<Store> getAllStores() {
         return storeModel.getStores();
     }
     @CrossOrigin(origins = "http://localhost:8080")

@@ -1,10 +1,13 @@
 package com.crm.customerRM.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Product {
@@ -19,6 +22,10 @@ public class Product {
     @Column(nullable = false)
     private Double price;
 
+    @Column(nullable = false)
+    @OneToMany(mappedBy = "product")
+    private List<InventoryItem> inventoryItems;
+    
     // Default Constructor
     public Product() {
     }

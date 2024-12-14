@@ -13,25 +13,16 @@
         />
       </div>
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email">Contact Info</label>
         <input
           id="email"
           type="email"
-          v-model="customer.email"
-          placeholder="Enter customer email"
+          v-model="customer.contactInfo"
+          placeholder="Enter customer Contact Info "
           required
         />
       </div>
-      <div class="form-group">
-        <label for="phone">Phone</label>
-        <input
-          id="phone"
-          type="tel"
-          v-model="customer.phone"
-          placeholder="Enter customer phone"
-          required
-        />
-      </div>
+
       <button type="submit" class="btn">Add Customer</button>
     </form>
   </div>
@@ -44,24 +35,20 @@ export default {
     return {
       customer: {
         name: "",
-        email: "",
-        phone: "",
+        contactInfo: "",
       },
     };
   },
   methods: {
     submitCustomer() {
       // Send customer data to backend
-      const customer = {
-        name: this.customer.name,
-        contactInfo: this.customer.email + " " + this.customer.phone,
-      };
+
       fetch("http://localhost:8081/api/clients/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(customer),
+        body: JSON.stringify(this.customer),
       })
         .then((response) => {
           if (!response.ok) throw new Error("Failed to add customer");

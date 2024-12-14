@@ -14,11 +14,7 @@
       </button>
       <AddCustomer v-if="c2" @close="toggleComponent('c2')" />
 
-      <!-- Update Inventory Button -->
-      <button class="action-btn" @click="toggleComponent('c3')" v-show="!c3">
-        Update Inventory
-      </button>
-      <UpdateInventory v-if="c3" @close="toggleComponent('c3')" />
+
     </div>
   </div>
 </template>
@@ -26,7 +22,6 @@
 <script>
 import RecordSale from "@/components/RecordSale.vue";
 import AddCustomer from "@/components/AddCustomer.vue";
-import UpdateInventory from "@/components/UpdateInventory.vue";
 
 export default {
   name: "QuickActions",
@@ -34,7 +29,6 @@ export default {
     return {
       c1: false,
       c2: false,
-      c3: false,
     };
   },
   methods: {
@@ -46,7 +40,6 @@ export default {
   components: {
     RecordSale,
     AddCustomer,
-    UpdateInventory,
   },
 };
 </script>

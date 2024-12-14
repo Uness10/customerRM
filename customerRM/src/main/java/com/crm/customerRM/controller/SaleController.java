@@ -27,7 +27,7 @@ public class SaleController {
     @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping("/add")
     public Sale insertSale(@RequestBody Sale p) {
-        // Save the Sale to the repository
+        
         return saleModel.createSale(p);
     }
 }

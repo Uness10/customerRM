@@ -1,37 +1,34 @@
 package com.crm.customerRM.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.*;
 
 @Entity
 public class SaleItem {
 
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Association with InventoryItem
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "inventory_item_id", nullable = false)
+    private InventoryItem inventoryItem;
 
     @Column(nullable = false)
     private int quantity;
 
     @ManyToOne
     @JoinColumn(name = "sale_id", nullable = false)
+    @JsonBackReference
     private Sale sale;
 
     // Constructors
-    public SaleItem() {
-    }
+    public SaleItem() {}
 
-    public SaleItem(Product product, int quantity) {
-        this.product = product;
+    public SaleItem(InventoryItem inventoryItem, int quantity) {
+        this.inventoryItem = inventoryItem;
         this.quantity = quantity;
     }
 
@@ -40,12 +37,12 @@ public class SaleItem {
         return id;
     }
 
-    public Product getProduct() {
-        return product;
+    public InventoryItem getInventoryItem() {
+        return inventoryItem;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setInventoryItem(InventoryItem inventoryItem) {
+        this.inventoryItem = inventoryItem;
     }
 
     public int getQuantity() {

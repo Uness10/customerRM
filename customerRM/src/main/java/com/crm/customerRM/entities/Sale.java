@@ -1,8 +1,9 @@
 package com.crm.customerRM.entities;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
@@ -20,22 +21,22 @@ public class Sale {
     private Double totalAmount = 0.0;
 
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SaleItem> items = new ArrayList<>();
+    @JsonManagedReference
+    private List<SaleItem> items ;
 
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
-
-
     // Default Constructor
-    public Sale() {
-    }
+    public Sale() {}
+
     public Sale(Client client, Date date) {
         this.client = client;
         this.date = date;
         this.totalAmount = 0.0;
     }
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -69,13 +70,13 @@ public class Sale {
         this.client = client;
     }
 
-
     // Calculate Total Amount
     public void calculateTotal() {
         this.totalAmount = 0.0; // Reset total amount
         for (SaleItem item : this.items) {
-            this.totalAmount += item.getProduct().getPrice() * item.getQuantity();
+            this.totalAmount += item.getInventoryItem().getProduct().getPrice() * item.getQuantity();
         }
     }
-    
+
+
 }

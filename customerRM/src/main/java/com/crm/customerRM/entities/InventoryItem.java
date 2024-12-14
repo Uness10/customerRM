@@ -1,5 +1,10 @@
 package com.crm.customerRM.entities;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class InventoryItem {
@@ -22,10 +28,15 @@ public class InventoryItem {
     @Column(nullable = false)
     private int quantity;
 
+    @Column(nullable = false)
+    @OneToMany(mappedBy = "inventoryItem", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SaleItem> saleItems;
+
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
+    @JsonBackReference
     private Store store;
-
+    
     // Default Constructor
     public InventoryItem() {
     }
@@ -34,7 +45,6 @@ public class InventoryItem {
     public InventoryItem(Product product, int quantity, Store store) {
         this.product = product;
         this.quantity = quantity;
-        this.store = store;
     }
 
     // Getters and Setters
@@ -65,4 +75,5 @@ public class InventoryItem {
     public void setStore(Store store) {
         this.store = store;
     }
+
 }
