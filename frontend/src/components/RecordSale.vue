@@ -1,58 +1,38 @@
 <template>
-  <div>
-    <h2>Create a New Sale</h2>
-    <form @submit.prevent="submitForm">
-      <!-- Date Selection -->
-      <div>
-        <label for="date">Sale Date:</label>
-        <input type="date" v-model="sale.date" id="date" required />
+  <div class="sale-form-container">
+    <h1 class="section-title">Create a New Sale</h1>
+    <form @submit.prevent="submitForm" class="form">
+      <div class="form-group">
+        <label for="date">Sale Date</label>
+        <input type="date" v-model="sale.date" id="date" required class="form-input" />
       </div>
-
-      <!-- Store Selection -->
-      <div>
-        <label for="store">Store:</label>
-        <select v-model="store" id="store" @change="fetchProductsByStore" required>
-          <option v-for="store in stores" :key="store.id" :value="store">
-            {{ store.name }}
-          </option>
+      <div class="form-group">
+        <label for="store">Store</label>
+        <select v-model="store" id="store" @change="fetchProductsByStore" required class="form-select">
+          <option v-for="store in stores" :key="store.id" :value="store">{{ store.name }}</option>
         </select>
       </div>
-
-      <!-- Client Selection -->
-      <div>
-        <label for="client">Client:</label>
-        <select v-model="sale.client" id="client" required>
-          <option v-for="client in clients" :key="client.id" :value="client">
-            {{ client.name }}
-          </option>
+      <div class="form-group">
+        <label for="client">Client</label>
+        <select v-model="sale.client" id="client" required class="form-select">
+          <option v-for="client in clients" :key="client.id" :value="client">{{ client.name }}</option>
         </select>
       </div>
-
-      <!-- Sale Items -->
-      <div v-for="(item, index) in sale.items" :key="index">
-        <label for="product">Product:</label>
-        <select v-model="item.inventoryItem" id="product" @change="updateTotalAmount" required>
-          <option v-for="inv in inventory" :key="inv.id" :value="inv">
-            {{ inv.product.name }}
-          </option>
+      <div v-for="(item, index) in sale.items" :key="index" class="form-group">
+        <label for="product">Product</label>
+        <select v-model="item.inventoryItem" id="product" @change="updateTotalAmount" required class="form-select">
+          <option v-for="inv in inventory" :key="inv.id" :value="inv">{{ inv.product.name }}</option>
         </select>
-
-        <label for="quantity">Quantity:</label>
-        <input type="number" v-model="item.quantity" id="quantity" required min="1" @input="updateTotalAmount" />
-
-        <button @click="removeItem(index)" type="button">Remove Item</button>
+        <label for="quantity">Quantity</label>
+        <input type="number" v-model="item.quantity" id="quantity" required min="1" @input="updateTotalAmount" class="form-input" />
+        <button type="button" @click="removeItem(index)" class="remove-item-btn">Remove Item</button>
       </div>
-
-      <button @click="addItem" type="button">Add Item</button>
-
-      <!-- Total Amount Section -->
-      <div>
-        <label>Total Amount:</label>
-        <span>{{ totalAmount }}</span>
+      <button type="button" @click="addItem" class="add-item-btn">Add Item</button>
+      <div class="total-amount">
+        <label>Total Amount</label>
+        <span class="amount">{{ totalAmount }}</span>
       </div>
-
-      <!-- Submit Button (Disabled if form is incomplete) -->
-      <button type="submit" :disabled="!isFormValid">Submit Sale</button>
+      <button type="submit" :disabled="!isFormValid" class="submit-btn">Submit Sale</button>
     </form>
   </div>
 </template>
@@ -165,3 +145,101 @@ export default {
   },
 };
 </script>
+<style scoped>
+.sale-form-container {
+  background-color: #ffffff;
+  padding: 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 3rem auto;
+  font-family: 'Inter', sans-serif;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.form-input,
+.form-select {
+  padding: 0.9rem;
+  font-size: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #d1d5db;
+  width: 100%;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  outline: none;
+}
+
+button {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.9rem 1.5rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  text-align: center;
+}
+
+button:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+button:active {
+  background-color: #1e40af;
+  transform: translateY(1px);
+}
+
+.remove-item-btn {
+  background-color: #ef4444;
+  margin-top: 0.5rem;
+}
+
+.add-item-btn {
+  background-color: #22c55e;
+}
+
+.total-amount {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 1rem;
+  color: #333;
+}
+
+.amount {
+  font-size: 1.5rem;
+  color: #4caf50;
+}
+</style>
