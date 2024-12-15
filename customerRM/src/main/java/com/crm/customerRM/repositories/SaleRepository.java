@@ -14,4 +14,5 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
     long countByClientId(Long clientId);
 
+
 }

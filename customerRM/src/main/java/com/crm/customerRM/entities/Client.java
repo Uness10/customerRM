@@ -1,5 +1,7 @@
 package com.crm.customerRM.entities;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +16,9 @@ public class Client {
 
     @Column(nullable = false)
     private String contactInfo;
+
+    @OneToMany(mappedBy = "client")
+    private List<Sale> sales;
 
     // Default Constructor
     public Client() {
