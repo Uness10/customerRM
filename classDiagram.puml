@@ -1,0 +1,62 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Admin {
+    - adminId : int
+    - username : String
+    - password : String
+    + login() : boolean
+    + createSale(client: Client, items: List<SaleItem>) : Sale
+    + manageInventory(item: InventoryItem, quantity: int) : void
+}
+
+class Client {
+    - clientId : int
+    - name : String
+    - contactInfo : String
+    + getClientInfo() : String
+}
+
+class Sale {
+    - saleId : int
+    - date : Date
+    - totalAmount : double
+    + calculateTotal() : double
+    + getSaleDetails() : String
+}
+
+class SaleItem {
+    - saleItemId : int
+    - quantity : int
+    + getLineTotal() : double
+}
+
+class Product {
+    - productId : int
+    - name : String
+    - price : double
+    + getPrice() : double
+    + getDescription() : String
+}
+
+class Store {
+    - storeId : int
+    - name : String
+    - location : String
+    + getInventory() : List<InventoryItem>
+}
+
+class InventoryItem {
+    - inventoryItemId : int
+    - quantity : int
+    + updateQuantity(qty: int) : void
+}
+
+Admin "1" --> "0..*" Sale : "creates"
+Client "0..*" --> "0..*" Sale : "purchases"
+Sale "1..*" o--> "1" SaleItem : "includes"
+SaleItem "0..*" --> "1" InventoryItem: "refers_to"
+Store "0..*" o--> "1" InventoryItem : "manages"
+InventoryItem "1..*" --> "1" Product : "refers_to"
+
+@enduml
