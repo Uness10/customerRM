@@ -18,10 +18,19 @@
           <span v-show="!isFolded" class="label">{{ link.label }}</span>
         </router-link>
       </li>
+      <!-- Logout Button -->
+      <li class="sidebar-item">
+        <button 
+          @click="logout" 
+          class="sidebar-link logout-btn"
+        >
+          <span class="fas fa-sign-out-alt icon"></span>
+          <span v-show="!isFolded" class="label">Logout</span>
+        </button>
+      </li>
     </ul>
   </div>
 </template>
-
 <script>
 export default {
   name: 'Sidebar',
@@ -40,6 +49,16 @@ export default {
   methods: {
     toggleSidebar() {
       this.isFolded = !this.isFolded;
+    },
+    logout() {
+      // Remove token from localStorage
+      localStorage.removeItem('authToken');
+      
+      // Redirect to the login page
+      this.$router.push('/login');
+
+      // Optionally emit an event or update global state
+      this.$emit('logout');
     },
   },
 };
@@ -83,6 +102,22 @@ export default {
   justify-content: center;
   align-items: center;
 }
+.logout-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+  padding: 10px 15px;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #555;
+}
+
 
 .sidebar-link {
   display: flex;

@@ -19,15 +19,7 @@ public class AdminController {
         this.adminModel = adminModel;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> connect(@RequestParam("username") String username, @RequestParam("password") String password) {
-        try {
-            Admin admin = adminModel.login(username, password);
-            return ResponseEntity.ok(admin); // Return the admin object as a JSON response
-        } catch (InvalidCredentialsException e) {
-            return ResponseEntity.status(401).body(e.getMessage()); // Return 401 Unauthorized with an error message
-        }
-    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getAdminById(@PathVariable("id") Long id) {

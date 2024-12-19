@@ -26,6 +26,21 @@ public class StoreModel {
     public Store createStore(Store store) {
         return repo.save(store);
     }
+    public void deleteStore(Long storeId) {
+        repo.deleteById(storeId);
+    }
+    public Store addItem(Long storeId, InventoryItem inventoryItem) {
+        Store store = repo.findById(storeId).orElseThrow(() -> 
+            new IllegalArgumentException("Store with ID " + storeId + " not found."));
+    
+        inventoryItem.setStore(store);
+        System.out.println(inventoryItem);
+        store.addInventory(inventoryItem);
+    
+        // Save the inventory item
+        return repo.save(store);
+    }
+    
 
     
 }

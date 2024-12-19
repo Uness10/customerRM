@@ -17,7 +17,7 @@ public class AdminModel {
         this.repo = repo;
     }
 
-    public Admin login(String username, String password) throws InvalidCredentialsException {
+    public Admin login(String username, String password)  {
         Optional<Admin> optionalAdmin = repo.findByUsername(username);
 
         if (optionalAdmin.isPresent()) {
@@ -25,10 +25,10 @@ public class AdminModel {
             if (password.equals(adminFound.getPassword())) {
                 return adminFound;
             } else {
-                throw new InvalidCredentialsException("Invalid Password");
+                return null;
             }
         } else {
-            throw new InvalidCredentialsException("Invalid Username");
+            return null;
         }
     }
 

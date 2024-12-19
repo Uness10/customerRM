@@ -73,7 +73,6 @@ export default {
 <style scoped>
 .dashboard {
   padding: 2rem;
-  background-color: #f3f4f6;
   min-height: 100vh;
   margin-left: 5%;
   font-family: 'Inter', sans-serif;

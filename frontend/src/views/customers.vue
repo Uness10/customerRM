@@ -134,7 +134,6 @@
   padding-left: 12%;
   padding-right: 5%;
   
-  background-color: #f8f9fa;
   border-radius: 10px;
 }
 

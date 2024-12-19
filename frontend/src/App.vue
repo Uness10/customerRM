@@ -1,52 +1,45 @@
 <template>
-  <sidebar v-if="isAuthenticated"/>
-  <nav v-else>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/contact">Contact</router-link>
-  </nav>
-    <router-view/>
+  <div id="app">
+    <!-- Show Sidebar if authenticated -->
+    <Sidebar v-if="isAuthenticated" />
 
-<Footer/>
+    <!-- Show Home view if not authenticated -->
+    <Home v-else />
 
+    <!-- Main content area -->
+    <router-view />
+    <Footer />
+  </div>
 </template>
 
 <script>
-import sidebar from './components/sidebar.vue'
-import Footer from './components/footer.vue'
+import Sidebar from './components/sidebar.vue';
+import Footer from './components/footer.vue';
+import Home from './views/home.vue';
+
 export default {
+  name: 'App',
   data() {
     return {
-      isAuthenticated: true // Set this to true or false based on your authentication logic
+      isAuthenticated: !!localStorage.getItem('authToken'), // Check for token in localStorage
     };
   },
+  watch: {
+    // React to changes in authentication status
+    $route() {
+      this.isAuthenticated = !!localStorage.getItem('authToken');
+    },
+  },
   components: {
-    sidebar,
-    Footer
-  }
+    Sidebar,
+    Footer,
+    Home,
+  },
 };
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  
-}
 
-nav {
-  padding: 30px;
-}
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

@@ -1,18 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router';  // Vue 3 syntax
-import Home from '@/views/home.vue';
+import Inventory from '@/views/inventory.vue';
 import Dashboard from '@/views/dashboard.vue';
 import Customers from '@/views/customers.vue';
 import settings from '@/views/settings.vue';
 const routes = [
-  { path: '/', name: 'home', component: Home },
-  { path: '/dashboard', name: 'dashboard', component: Dashboard },
-  {path :'/customers', name: 'customers', component: Customers},
-  {path :'/settings', name: 'settings', component: settings}
+  { path: '/dashboard', name: 'dashboard', component: Dashboard , meta: { requiresAuth: true }  },
+  {path :'/customers', name: 'customers', component: Customers,  meta: { requiresAuth: true } },
+  {path :'/settings', name: 'settings', component: settings, meta: { requiresAuth: true } },
+  {path :'/inventory', name: 'Inventory', component: Inventory, meta: { requiresAuth: true } }
+
+  // sales and inventory
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL), // Using createWebHistory for Vue 3
   routes,
+});
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem('authToken');
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next('/'); // Redirect to home if not authenticated
+  } else {
+    next(); // Proceed as usual
+  }
 });
 
 export default router;

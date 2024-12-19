@@ -67,4 +67,7 @@ public class Store {
     public void setInventory(List<InventoryItem> inventory) {
         this.inventory = inventory;
     }
+    public void addInventory(InventoryItem inv){
+        this.inventory.add(inv);
+    }
 }
