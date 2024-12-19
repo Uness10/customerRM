@@ -18,14 +18,18 @@
           <option v-for="client in clients" :key="client.id" :value="client">{{ client.name }}</option>
         </select>
       </div>
-      <div v-for="(item, index) in sale.items" :key="index" class="form-group">
-        <label for="product">Product</label>
-        <select v-model="item.inventoryItem" id="product" @change="updateTotalAmount" required class="form-select">
-          <option v-for="inv in inventory" :key="inv.id" :value="inv">{{ inv.product.name }}</option>
-        </select>
-        <label for="quantity">Quantity</label>
-        <input type="number" v-model="item.quantity" id="quantity" required min="1" @input="updateTotalAmount" class="form-input" />
-        <button type="button" @click="removeItem(index)" class="remove-item-btn">Remove Item</button>
+      <div v-for="(item, index) in sale.items" :key="index" class="form-group item-group">
+        <div class="item-select">
+          <label for="product">Product</label>
+          <select v-model="item.inventoryItem" id="product" @change="updateTotalAmount" required class="form-select">
+            <option v-for="inv in inventory" :key="inv.id" :value="inv">{{ inv.product.name }}</option>
+          </select>
+        </div>
+        <div class="item-quantity">
+          <label for="quantity">Quantity</label>
+          <input type="number" v-model="item.quantity" id="quantity" required min="1" @input="updateTotalAmount" class="form-input" />
+        </div>
+        <button type="button" @click="removeItem(index)" class="remove-item-btn">Remove</button>
       </div>
       <button type="button" @click="addItem" class="add-item-btn">Add Item</button>
       <div class="total-amount">
@@ -148,31 +152,42 @@ export default {
 <style scoped>
 .sale-form-container {
   background-color: #ffffff;
-  padding: 2.5rem;
+  padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
+  width: 100%;
   margin: 3rem auto;
   font-family: 'Inter', sans-serif;
 }
 
 .section-title {
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: #1f2937;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+}
+
+.item-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.item-select, .item-quantity {
+  flex: 1;
 }
 
 label {
@@ -184,7 +199,7 @@ label {
 
 .form-input,
 .form-select {
-  padding: 0.9rem;
+  padding: 0.75rem;
   font-size: 1rem;
   border-radius: 0.75rem;
   border: 1px solid #d1d5db;
@@ -201,10 +216,10 @@ label {
 button {
   background-color: #3b82f6;
   color: white;
-  padding: 0.9rem 1.5rem;
+  padding: 0.75rem 1.25rem;
   border: none;
   border-radius: 0.75rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
@@ -224,17 +239,21 @@ button:active {
 
 .remove-item-btn {
   background-color: #ef4444;
-  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  margin-top: 1rem;
+  align-self: flex-start;
 }
 
 .add-item-btn {
   background-color: #22c55e;
+  margin-top: 1rem;
 }
 
 .total-amount {
   font-size: 1.25rem;
   font-weight: 700;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   color: #333;
 }
 
@@ -242,4 +261,28 @@ button:active {
   font-size: 1.5rem;
   color: #4caf50;
 }
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .sale-form-container {
+    padding: 1.5rem;
+  }
+
+  .item-group {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .remove-item-btn {
+    width: 100%;
+  }
+
+  .item-select, .item-quantity {
+    width: 100%;
+  }
+}
+
 </style>

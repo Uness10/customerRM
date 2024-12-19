@@ -2,22 +2,23 @@
   <div class="quick-actions">
     <!-- Collapse/Expand Button -->
     <button class="collapse-btn" @click="toggleCollapse">
-      {{ isCollapsed ? 'Expand Quick Actions' : 'Collapse Quick Actions' }}
+      <i :class="isCollapsed ? 'fas fa-chevron-down' : 'fas fa-chevron-up'"></i>
+      {{ isCollapsed ? 'Expand' : 'Collapse' }}
     </button>
+    <h3 class="section-title">Quick Actions</h3>
 
     <!-- Actions Section (conditionally rendered) -->
     <div v-show="!isCollapsed" class="actions-content">
-      <h3 class="section-title">Quick Actions</h3>
       <div class="actions-container">
         <!-- Record Sale Button -->
         <button class="action-btn" @click="toggleComponent('c1')" v-show="!c1">
-          Record A Sale
+          <i class="fas fa-dollar-sign"></i> Record A Sale
         </button>
         <RecordSale v-if="c1" @close="toggleComponent('c1')" />
 
         <!-- Add Customer Button -->
         <button class="action-btn" @click="toggleComponent('c2')" v-show="!c2">
-          Add A Customer
+          <i class="fas fa-user-plus"></i> Add A Customer
         </button>
         <AddCustomer v-if="c2" @close="toggleComponent('c2')" />
       </div>
@@ -61,7 +62,11 @@ export default {
   border-radius: 1rem;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   margin-top: 2rem;
+  display: flex;
+  justify-content: center;  /* Center the actions content */
+  align-items: center;
   text-align: center;
+  flex-direction: column; /* Ensure the actions are stacked vertically */
 }
 
 /* Collapse Button */
@@ -90,13 +95,13 @@ export default {
 
 /* Actions Content */
 .actions-content {
+  display: flex;
+  gap: 2rem;  /* Adds space between the buttons */
+  justify-content: center; /* Centers the buttons horizontally */
+  align-items: center;
   overflow: hidden;
   transition: max-height 0.3s ease, opacity 0.3s ease;
-}
-
-.actions-content[style*="display: none"] {
-  max-height: 0;
-  opacity: 0;
+  width : 100%;
 }
 
 /* Section Title */
@@ -110,9 +115,9 @@ export default {
 /* Actions Container */
 .actions-container {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  justify-items: center;
+  flex-direction: row; /* Aligns buttons in a row */
+  gap: 2rem;  /* Space between the buttons */
+  justify-content: center;
   align-items: center;
 }
 
@@ -129,7 +134,7 @@ export default {
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  width: 70%;
+  width: 180px; /* Set a fixed width for each button */
 }
 
 .action-btn:hover {
@@ -150,12 +155,13 @@ export default {
   }
 
   .actions-container {
-    flex-direction: column;
+    flex-direction: column; /* Stack the buttons vertically on smaller screens */
     gap: 1rem;
   }
 
   .action-btn {
-    width: 100%;
+    width: 100%;  /* Make buttons take up full width on smaller screens */
   }
 }
+
 </style>

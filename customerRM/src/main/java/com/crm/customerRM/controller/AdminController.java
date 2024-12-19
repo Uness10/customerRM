@@ -1,17 +1,15 @@
 package com.crm.customerRM.controller;
 
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.crm.customerRM.entities.Admin;
 import com.crm.customerRM.exceptions.InvalidCredentialsException;
 import com.crm.customerRM.models.AdminModel;
 
 @RestController
+@RequestMapping("/api/admin")
 public class AdminController {
 
     private final AdminModel adminModel;
@@ -27,14 +25,39 @@ public class AdminController {
             Admin admin = adminModel.login(username, password);
             return ResponseEntity.ok(admin); // Return the admin object as a JSON response
         } catch (InvalidCredentialsException e) {
-            return ResponseEntity.status(401).body( e.getMessage()); // Return 401 Unauthorized with an error message
+            return ResponseEntity.status(401).body(e.getMessage()); // Return 401 Unauthorized with an error message
         }
     }
 
-    @GetMapping("/dashboard")
-    public ResponseEntity<?> dashboard() {
-        // If you need to return some data for the dashboard, do it here
-        // For example, you could return a list of information or status
-        return ResponseEntity.ok("Dashboard data here"); // Example response
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getAdminById(@PathVariable("id") Long id) {
+        Admin admin = adminModel.getAdminById(id);
+        if (admin != null) {
+            return ResponseEntity.ok(admin);
+        } else {
+            return ResponseEntity.status(404).body("Admin not found");
+        }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateAdmin(@RequestBody Admin adminDetails) {
+        try {
+            Admin updatedAdmin = adminModel.updateAdmin(adminDetails);
+            return ResponseEntity.ok(updatedAdmin); // Return the updated admin object
+        } catch (InvalidCredentialsException e) {
+            return ResponseEntity.status(404).body(e.getMessage()); // Return an error if admin not found or update fails
+        }
+    }
+
+    @GetMapping("/details/{username}")
+    public ResponseEntity<?> getAdminDetails(@PathVariable("username") String username) {
+        Admin admin;
+        admin = adminModel.getAdminDetails(username);
+
+        if (admin != null) {
+            return ResponseEntity.ok(admin); // Return the admin object if found
+        } else {
+            return ResponseEntity.status(404).body("Admin not found with username: " + username);
+        }
     }
 }

@@ -5,11 +5,15 @@
     <router-link to="/about">About</router-link> |
     <router-link to="/contact">Contact</router-link>
   </nav>
-  <router-view/>
+    <router-view/>
+
+<Footer/>
+
 </template>
 
 <script>
 import sidebar from './components/sidebar.vue'
+import Footer from './components/footer.vue'
 export default {
   data() {
     return {
@@ -17,7 +21,8 @@ export default {
     };
   },
   components: {
-    sidebar
+    sidebar,
+    Footer
   }
 };
 </script>

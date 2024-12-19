@@ -71,13 +71,13 @@ methods: {
 </script>
 <style scoped>
 
-.sale-form-container {
+.add-customer-form {
   background-color: #ffffff;
-  padding: 2.5rem;
+  padding: 1.5rem;
   border-radius: 1rem;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  margin: 3rem auto;
+  width: 100%;
+  margin:  auto;
   font-family: 'Inter', sans-serif;
 }
 
@@ -92,7 +92,6 @@ methods: {
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
 }
 
 .form-group {
@@ -147,25 +146,6 @@ button:active {
   transform: translateY(1px);
 }
 
-.remove-item-btn {
-  background-color: #ef4444;
-  margin-top: 0.5rem;
-}
 
-.add-item-btn {
-  background-color: #22c55e;
-}
-
-.total-amount {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-top: 1rem;
-  color: #333;
-}
-
-.amount {
-  font-size: 1.5rem;
-  color: #4caf50;
-}
 
 </style>

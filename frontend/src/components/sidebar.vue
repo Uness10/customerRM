@@ -1,8 +1,12 @@
 <template>
   <div :class="['sidebar', { folded: isFolded }]">
     <div class="sidebar-header">
-      <h2 v-if="!isFolded">My App</h2>
-      <button class="toggle-btn" @click="toggleSidebar">
+      <h2 v-if="!isFolded">CRM</h2>
+      <button 
+        class="toggle-btn" 
+        @click="toggleSidebar"
+        aria-label="Toggle sidebar"
+      >
         <span v-if="isFolded">☰</span>
         <span v-else>×</span>
       </button>
@@ -10,7 +14,7 @@
     <ul class="sidebar-links">
       <li v-for="link in links" :key="link.route" class="sidebar-item">
         <router-link :to="link.route" class="sidebar-link">
-          <span class="icon">{{ link.icon }}</span>
+          <span :class="link.icon" class="icon"></span>
           <span v-show="!isFolded" class="label">{{ link.label }}</span>
         </router-link>
       </li>
@@ -18,20 +22,18 @@
   </div>
 </template>
 
-
-  
 <script>
 export default {
   name: 'Sidebar',
   data() {
     return {
-      isFolded: true, // Controls whether the sidebar is folded
+      isFolded: true,
       links: [
-        { route: '/dashboard', label: 'Dashboard', icon: '📊' },
-        { route: '/sales', label: 'Sales', icon: '💰' },
-        { route: '/customers', label: 'Customers', icon: '👥' },
-        { route: '/inventory', label: 'Inventory', icon: '📦' },
-        { route: '/settings', label: 'Settings', icon: '⚙️' },
+        { route: '/dashboard', label: 'Dashboard', icon: 'fas fa-chart-bar' },
+        { route: '/sales', label: 'Sales', icon: 'fas fa-dollar-sign' },
+        { route: '/customers', label: 'Customers', icon: 'fas fa-users' },
+        { route: '/inventory', label: 'Inventory', icon: 'fas fa-box' },
+        { route: '/settings', label: 'Settings', icon: 'fas fa-cogs' },
       ],
     };
   },
@@ -45,55 +47,41 @@ export default {
 
 <style scoped>
 .sidebar {
-  width: 250px;
+  width: 20%;
   height: 100vh;
   background-color: #333;
   color: white;
-  padding: 20px;
   position: fixed;
   top: 0;
   left: 0;
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease-in-out;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 20px;
 }
 
 .sidebar.folded {
-  width: 3%; /* When folded, set a smaller width */
-}
-
-.sidebar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.sidebar-header h2 {
-  font-size: 24px;
-  margin: 0;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.toggle-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 30px;
-  cursor: pointer;
-  padding: 5px;
+  width: 7%;
+  z-index: 4;
+  background-color: #444;
 }
 
 .sidebar-links {
   list-style-type: none;
+  margin: 0;
   padding: 0;
-  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
 }
 
 .sidebar-item {
   display: flex;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 15px;
 }
 
 .sidebar-link {
@@ -101,9 +89,11 @@ export default {
   align-items: center;
   color: white;
   text-decoration: none;
-  padding: 10px;
   border-radius: 4px;
   transition: background-color 0.3s ease;
+  padding: 10px 15px;
+  width: 100%;
+  text-align: center;
 }
 
 .sidebar-link:hover {
@@ -111,12 +101,29 @@ export default {
 }
 
 .sidebar-link .icon {
-  font-size: 20px;
-  margin : 1% 1%;
-
+  font-size: 24px;
+  margin-bottom: 5px;
 }
 
 .sidebar.folded .label {
-  display: none; /* Hide labels when folded */
+  display: none;
+}
+
+.sidebar:not(.folded) .icon {
+  display: none;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+  transition: transform 0.3s;
+}
+
+.toggle-btn:hover {
+  transform: scale(1.1);
 }
 </style>

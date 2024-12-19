@@ -1,24 +1,25 @@
 <template>
-    <div class="clients-section">
-      <h1 class="section-title">All Clients</h1>
+  <div class="clients-section">
+    <h1 class="section-title">Manage Clients</h1>
+
+    <!-- Search and Filter Section -->
+    <div class="search-filter">
+      <input 
+        v-model="searchQuery" 
+        @input="searchClients" 
+        type="text" 
+        class="search-input" 
+        placeholder="Search Clients by Name"
+      />
       
-      <!-- Search and Filter Section -->
-      <div class="search-filter">
-        <input 
-          v-model="searchQuery" 
-          @input="searchClients" 
-          type="text" 
-          class="search-input" 
-          placeholder="Search Clients by Name" 
-        />
-        
-        <div class="filter-buttons">
-          <button @click="getHighSpenders">High Spenders</button>
-          <button @click="getInactiveClients">Inactive Clients</button>
-        </div>
+      <div class="filter-buttons">
+        <button @click="getHighSpenders" class="filter-btn">High Spenders</button>
+        <button @click="getInactiveClients" class="filter-btn">Inactive Clients</button>
       </div>
-      
-      <!-- Clients Table -->
+    </div>
+
+    <!-- Clients Table -->
+    <div v-if="clients.length" class="clients-table-container">
       <table class="clients-table">
         <thead>
           <tr>
@@ -31,24 +32,28 @@
           <tr v-for="client in clients" :key="client.id">
             <td>{{ client.name }}</td>
             <td>{{ client.contactInfo }}</td>
-            <td>
-              <button @click="viewClient(client.id)">View</button>
-              <button @click="deleteClient(client.id)">Delete</button>
+            <td class="action-buttons">
+              <button @click="viewClient(client.id)" class="view-btn">View</button>
+              <button @click="deleteClient(client.id)" class="delete-btn">Delete</button>
             </td>
           </tr>
         </tbody>
       </table>
-  
-      <!-- Add Client Button -->
-      <button @click="toggleAddClientForm" class="add-client-btn">Add New Client</button>
-  
-      <!-- Conditional rendering for Add/Edit Client Form -->
-      <AddClient v-if="showAddClientForm" @close="toggleAddClientForm" />
-  
-      <!-- Conditional rendering for Client Details -->
-      <ClientDetails v-if="selectedClientId" :clientId="selectedClientId" @close="clearSelectedClient" />
     </div>
-  </template>
+
+    <div v-else class="no-clients">No clients found.</div>
+
+    <!-- Add Client Button -->
+    <button @click="toggleAddClientForm" class="add-client-btn">Add New Client</button>
+
+    <!-- Conditional rendering for Add/Edit Client Form -->
+    <AddClient v-if="showAddClientForm" @close="toggleAddClientForm" />
+
+    <!-- Conditional rendering for Client Details -->
+    <ClientDetails v-if="selectedClientId" :clientId="selectedClientId" @close="clearSelectedClient" />
+  </div>
+</template>
+
   
   <script>
   import axios from 'axios';
@@ -122,81 +127,152 @@
   </script>
   
   <style scoped>
+.clients-section {
+  padding :5%;
+  padding-left: 12%;
+  padding-right: 5%;
+  
+  background-color: #f8f9fa;
+  border-radius: 10px;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.search-filter {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.search-input {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 30%;
+  margin-right: 10%;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-btn {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.filter-btn:hover {
+  background-color: #0056b3;
+}
+
+.clients-table-container {
+  margin-top: 20px;
+}
+
+.clients-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.clients-table th, .clients-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.clients-table td {
+  vertical-align: middle;
+}
+
+.action-buttons button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.view-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.view-btn:hover {
+  background-color: #218838;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.no-clients {
+  font-size: 1.2rem;
+  color: #6c757d;
+  text-align: center;
+}
+
+.add-client-btn {
+  margin-top: 2vh;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 30%;
+  text-align: center;
+  cursor: pointer;
+}
+
+.add-client-btn:hover {
+  background-color: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .clients-section {
-    margin-left : 5%;
-    padding: 20px;
-    background-color: #f8f9fa;
+    margin: 0 10px;
+    padding: 15px;
   }
-  
-  .section-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #343a40;
-    margin-bottom: 20px;
-  }
-  
-  .search-filter {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
+
   .search-input {
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 300px;
+    width: 200px;
   }
-  
-  .filter-buttons button {
-    margin-left: 10px;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
+
+  .filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
   }
-  
-  .filter-buttons button:hover {
-    background-color: #0056b3;
-  }
-  
-  .clients-table {
+
+  .filter-btn {
+    margin-top: 5px;
     width: 100%;
-    border-collapse: collapse;
   }
-  
+
   .clients-table th, .clients-table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+    font-size: 0.9rem;
   }
-  
-  .clients-table button {
-    padding: 5px 10px;
-    margin: 0 5px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
+
+  .action-buttons button {
+    padding: 4px 8px;
   }
-  
-  .clients-table button:hover {
-    background-color: #218838;
-  }
-  
-  .add-client-btn {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .add-client-btn:hover {
-    background-color: #218838;
-  }
+}
+
   </style>
   

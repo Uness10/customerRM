@@ -3,12 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 // src/main.js
-import FontAwesomeIcon from './plugins/font-awesome'; // Import FontAwesome config
+import './index.css'; // Ensure this is the path to your CSS file
+
+import 'font-awesome/css/font-awesome.min.css';
 
 const app = createApp(App);
 
-// Register Font Awesome globally
-app.component('font-awesome-icon', FontAwesomeIcon);
 
 
 

@@ -5,21 +5,24 @@
     <form @submit.prevent="submitForm">
       <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" v-model="client.name" id="name" placeholder="Client Name" required />
+        <input type="text" v-model="client.name" id="name" placeholder="Enter Client Name" required />
       </div>
 
       <div class="form-group">
         <label for="contactInfo">Contact Info</label>
-        <input type="text" v-model="client.contactInfo" id="contactInfo" placeholder="Client Contact Info" required />
+        <input type="text" v-model="client.contactInfo" id="contactInfo" placeholder="Enter Client Contact Info" required />
       </div>
 
-      <button type="submit" class="submit-btn">{{ isEditing ? "Update Client" : "Add Client" }}</button>
-      <button type="button" class="cancel-btn" @click="closeForm">Cancel</button>
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">{{ isEditing ? "Update Client" : "Add Client" }}</button>
+        <button type="button" class="cancel-btn" @click="closeForm">Cancel</button>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -74,16 +77,20 @@ export default {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center; /* Centering content */
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 16px; /* Reduced space between form fields */
 }
 
 label {
   display: block;
   font-size: 1rem;
   margin-bottom: 5px;
+  color: #333;
 }
 
 input {
@@ -91,6 +98,21 @@ input {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box; /* Ensures padding doesn't affect the width */
+  margin-top: 5px;
+}
+
+input:focus {
+  border-color: #007bff; /* Highlight the input on focus */
+  outline: none;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center; /* Center buttons horizontally */
+  gap: 10px; /* Space between buttons */
+  margin-top: 20px;
 }
 
 .submit-btn {
@@ -101,6 +123,7 @@ input {
   cursor: pointer;
   border: none;
   border-radius: 5px;
+  width: 150px; /* Fixed width for buttons */
 }
 
 .submit-btn:hover {
@@ -115,10 +138,22 @@ input {
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  margin-left: 10px;
+  width: 150px;
 }
 
 .cancel-btn:hover {
   background-color: #999;
 }
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .add-client-form {
+    padding: 15px;
+  }
+
+  .submit-btn, .cancel-btn {
+    width: 100%; /* Buttons take full width on small screens */
+  }
+}
+
 </style>
