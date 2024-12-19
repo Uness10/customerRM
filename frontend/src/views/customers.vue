@@ -107,6 +107,7 @@
       },
       getHighSpenders() {
         const threshold = prompt("Enter the spending threshold:");
+        if(threshold==null || threshold==="" || threshold==undefined) return;
         axios.get(`http://localhost:8081/api/clients/highSpenders?threshold=${threshold}`)
           .then(response => {
             this.clients = response.data;
@@ -114,6 +115,7 @@
       },
       getInactiveClients() {
         const days = prompt("Enter number of days of inactivity:");
+        if(days==null || days==="" || days==undefined) return;
         axios.get(`http://localhost:8081/api/clients/inactive?days=${days}`)
           .then(response => {
             this.clients = response.data;
