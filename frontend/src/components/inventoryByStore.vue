@@ -10,9 +10,14 @@
         <form @submit.prevent="addInventory">
           <div class="form-group">
             <label for="product">Select Product:</label>
-            <select id="product" v-model="newInventory.productId" required>
+            <select
+              id="product"
+              v-model="newInventory.product"
+              :disabled="!storeId" 
+              required
+            >
               <option value="" disabled>Select a product</option>
-              <option v-for="product in products" :key="product.id" :value="product.id">
+              <option v-for="product in products" :key="product.id" :value="product">
                 {{ product.name }}
               </option>
             </select>
@@ -29,7 +34,7 @@
             />
           </div>
 
-          <button type="submit">Add Inventory</button>
+          <button type="submit" :disabled="!storeId">Add Inventory</button> <!-- Disable submit button if no store is selected -->
         </form>
       </div>
 
@@ -39,7 +44,7 @@
         <div class="filter-section">
           <div class="filter-group">
             <label for="store">Select Store:</label>
-            <select id="store" v-model="storeId" @change="fetchInventory">
+            <select id="store" v-model="storeId" @change="fetchInventory" required>
               <option value="" disabled>Select a store</option>
               <option v-for="store in stores" :key="store.id" :value="store.id">
                 {{ store.name }}
@@ -110,7 +115,7 @@ export default {
       minQuantity: null, // Minimum quantity filter
       maxPrice: null, // Maximum price filter
       newInventory: {
-        productId: null, // Selected product for adding inventory
+        product: null, // Selected product for adding inventory
         quantity: null, // Quantity to be added
       },
     };
@@ -160,12 +165,13 @@ export default {
 
     // Add inventory for the selected store
     async addInventory() {
-      if (!this.newInventory.productId || !this.newInventory.quantity) {
+      if (!this.newInventory.product || !this.newInventory.quantity) {
         alert("Please fill in all fields.");
         return;
       }
 
       try {
+        console.log(this.newInventory);
         const response = await axios.post(
           `http://localhost:8081/api/stores/${this.storeId}/addInventory`,
           this.newInventory

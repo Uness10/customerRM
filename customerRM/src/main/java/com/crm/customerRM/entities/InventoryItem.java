@@ -13,8 +13,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
+@Table(
+    uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "store_id"})
+)
 public class InventoryItem {
 
     @Id
@@ -45,6 +50,7 @@ public class InventoryItem {
     public InventoryItem(Product product, int quantity, Store store) {
         this.product = product;
         this.quantity = quantity;
+        this.store = store;
     }
 
     // Getters and Setters
@@ -75,5 +81,4 @@ public class InventoryItem {
     public void setStore(Store store) {
         this.store = store;
     }
-
 }

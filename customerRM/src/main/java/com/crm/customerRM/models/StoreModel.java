@@ -13,6 +13,7 @@ import com.crm.customerRM.repositories.StoreRepository;
 public class StoreModel {
     @Autowired
     private StoreRepository repo;
+    private InventoryItemModel inv ; 
     public StoreModel(StoreRepository repo) {
         this.repo = repo;
     }
@@ -32,10 +33,13 @@ public class StoreModel {
     public Store addItem(Long storeId, InventoryItem inventoryItem) {
         Store store = repo.findById(storeId).orElseThrow(() -> 
             new IllegalArgumentException("Store with ID " + storeId + " not found."));
-    
+        
         inventoryItem.setStore(store);
         System.out.println(inventoryItem);
-        store.addInventory(inventoryItem);
+        if inv.getInventoryItemById(storeId)inventoryItem.getProduct().getId() in store.getInventory() 
+            store.addInventory(inventoryItem);
+        else 
+
     
         // Save the inventory item
         return repo.save(store);
