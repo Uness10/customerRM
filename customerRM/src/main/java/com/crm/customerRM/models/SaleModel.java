@@ -68,5 +68,8 @@ public class SaleModel {
     public void deleteSaleById(Long saleId) {
         repo.deleteById(saleId);
     }
+    public Long  getTotalSales() {
+        return repo.count(); // Custom query method from repository
+    }
     
 }

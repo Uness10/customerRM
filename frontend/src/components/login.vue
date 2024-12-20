@@ -84,11 +84,8 @@ export default {
         // Send login credentials as an Admin object in the request body
         const response = await axios.post('http://localhost:8081/auth/login', req);
 
-        // Extract token from the response and store it in localStorage
-        const token = response.data.replace('Bearer ', ''); // Remove the "Bearer " prefix
-        localStorage.setItem('authToken', token);
-
-        // Redirect to dashboard after successful login
+        const id = response.data 
+        localStorage.setItem('adminId', id);
         this.$router.push('/dashboard');
       } catch (error) {
         this.errorMessage = 'Invalid username or password';

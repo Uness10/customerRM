@@ -17,7 +17,7 @@ const router = createRouter({
   routes,
 });
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!localStorage.getItem('authToken');
+  const isAuthenticated = !!localStorage.getItem('adminId');
 
   if (to.meta.requiresAuth && !isAuthenticated) {
     next('/'); // Redirect to home if not authenticated

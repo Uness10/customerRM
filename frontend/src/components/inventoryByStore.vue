@@ -176,7 +176,7 @@ export default {
           `http://localhost:8081/api/stores/${this.storeId}/addInventory`,
           this.newInventory
         );
-        this.inventory.push(response.data); 
+        this.inventory.push(newInventory); 
         this.newInventory.productId = null;
         this.newInventory.quantity = null;
         alert("Inventory added successfully!");

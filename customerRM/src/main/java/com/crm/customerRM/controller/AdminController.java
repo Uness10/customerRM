@@ -1,5 +1,8 @@
 package com.crm.customerRM.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import com.crm.customerRM.entities.Admin;
 import com.crm.customerRM.exceptions.InvalidCredentialsException;
 import com.crm.customerRM.models.AdminModel;
+import com.crm.customerRM.models.ClientModel;
+import com.crm.customerRM.models.SaleModel;
+import com.crm.customerRM.models.StoreModel;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -14,9 +20,15 @@ public class AdminController {
 
     private final AdminModel adminModel;
 
+    private final ClientModel clientModel; 
+    private final SaleModel saleModel;     
+    private final StoreModel storeModel;  
     @Autowired
-    public AdminController(AdminModel adminModel) {
+    public AdminController(AdminModel adminModel, ClientModel clientModel, SaleModel saleModel, StoreModel storeModel) {
         this.adminModel = adminModel;
+        this.clientModel = clientModel;
+        this.saleModel = saleModel;
+        this.storeModel = storeModel;
     }
 
 
@@ -25,7 +37,7 @@ public class AdminController {
     public ResponseEntity<?> getAdminById(@PathVariable("id") Long id) {
         Admin admin = adminModel.getAdminById(id);
         if (admin != null) {
-            return ResponseEntity.ok(admin);
+            return ResponseEntity.ok(admin.getUsername());
         } else {
             return ResponseEntity.status(404).body("Admin not found");
         }
@@ -52,4 +64,21 @@ public class AdminController {
             return ResponseEntity.status(404).body("Admin not found with username: " + username);
         }
     }
+    @GetMapping("/stats")
+    public ResponseEntity<List<Long>> getTotals() {
+        // Fetch totals
+        long totalClients = clientModel.getTotalClients();
+        long totalSales = saleModel.getTotalSales();
+        long totalStores = storeModel.getTotalStores();
+        
+        // Create a List to hold the stats
+        List<Long> stats = new ArrayList<>();
+        stats.add(totalClients);
+        stats.add(totalSales);
+        stats.add(totalStores);
+        
+        // Return the stats list wrapped in a ResponseEntity
+        return ResponseEntity.ok(stats);
+    }
+
 }

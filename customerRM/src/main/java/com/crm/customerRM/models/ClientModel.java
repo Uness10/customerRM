@@ -52,6 +52,8 @@ public class ClientModel {
         return repo.findInactiveClientsSince(sqlCutoffDate);
     }
 
-
+    public Long getTotalClients() {
+        return repo.count(); // Custom query method from repository
+    }
     
 }

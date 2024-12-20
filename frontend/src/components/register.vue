@@ -87,20 +87,16 @@
           // Send register credentials as an Admin object in the request body
           const response = await axios.post('http://localhost:8081/auth/register', req);
   
-          const token = response.data.replace('Bearer ', ''); // Remove the "Bearer " prefix
-        localStorage.setItem('authToken', token);
 
-        // Redirect to dashboard after successful login
+
+        const id = response.data 
+        localStorage.setItem('adminId', id);
+        console.log(id)
         this.$router.push('/dashboard');
 
-        } catch (error) {
-          // Handle errors that occur during the registration process
-          if (error.response) {
-            this.errorMessage = error.response.data || 'An error occurred during registration';
-          } else {
-            this.errorMessage = 'Unable to connect to the server';
-          }
-        }
+      } catch (error) {
+        this.errorMessage = 'Username already in use';
+      }
       },
     },
   };

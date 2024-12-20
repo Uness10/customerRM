@@ -1,6 +1,5 @@
 package com.crm.customerRM.repositories;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.crm.customerRM.entities.Client;
-import com.crm.customerRM.entities.Sale;
 
 public interface ClientRepository extends JpaRepository<Client,Long> {
 
@@ -20,8 +18,7 @@ public interface ClientRepository extends JpaRepository<Client,Long> {
     @Query("SELECT c FROM Client c WHERE NOT EXISTS (" + "SELECT s FROM Sale s WHERE s.client = c AND s.date >= :cutoffDate)")
     List<Client> findInactiveClientsSince(@Param("cutoffDate") Date sqlCutoffDate);
 
-
-
+    long count();
     
 
 }

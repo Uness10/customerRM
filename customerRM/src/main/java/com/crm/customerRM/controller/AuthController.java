@@ -24,16 +24,12 @@ public class AuthController {
             String username = admin.getUsername();
             String password = admin.getPassword();
             System.out.println(username+','+password);
-            // Validate credentials using AdminModel
             Admin authenticatedAdmin = adminModel.login(username, password);
 
             if (authenticatedAdmin == null) {
                 return ResponseEntity.status(401).body("Invalid credentials");
             }
-
-            // Mock JWT generation (replace with actual JWT generation logic)
-            String token = "mock-jwt-token-for-" + username;
-            return ResponseEntity.ok().body("Bearer " + token);
+            return ResponseEntity.ok().body(authenticatedAdmin.getId());
 
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error during login: " + e.getMessage());
@@ -45,10 +41,8 @@ public class AuthController {
         try {
             Admin newAdmin = adminModel.register(admin);
 
-            String token = "mock-jwt-token-for-" + newAdmin.getUsername();
-            System.out.println(token);
 
-            return ResponseEntity.ok().body("Bearer " + token);
+            return ResponseEntity.ok().body(newAdmin.getId());
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error during registration: " + e.getMessage());
         }

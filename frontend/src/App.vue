@@ -21,13 +21,13 @@ export default {
   name: 'App',
   data() {
     return {
-      isAuthenticated: !!localStorage.getItem('authToken'), // Check for token in localStorage
+      isAuthenticated: !!localStorage.getItem('adminId'), // Check for token in localStorage
     };
   },
   watch: {
     // React to changes in authentication status
     $route() {
-      this.isAuthenticated = !!localStorage.getItem('authToken');
+      this.isAuthenticated = !!localStorage.getItem('adminId');
     },
   },
   components: {

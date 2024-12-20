@@ -13,6 +13,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
    // List<Sale> findByItemsProductId(Long productId);
 
     long countByClientId(Long clientId);
+    long count();  
 
 
 }
