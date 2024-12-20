@@ -2,74 +2,111 @@ package com.crm.customerRM.models;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.crm.customerRM.entities.Client;
 import com.crm.customerRM.entities.InventoryItem;
 import com.crm.customerRM.entities.Product;
 import com.crm.customerRM.entities.Sale;
 import com.crm.customerRM.entities.SaleItem;
+import com.crm.customerRM.repositories.ClientRepository;
 import com.crm.customerRM.repositories.SaleRepository;
 
 @Service
 public class SaleModel {
-    @Autowired
-    private final SaleRepository repo ; 
-    private final InventoryItemModel inventoryModel;
 
-    public SaleModel(SaleRepository repo, InventoryItemModel inventoryModel) {
-        this.repo = repo;
+    @Autowired
+    private SaleRepository saleRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    private InventoryItemModel inventoryModel;
+
+    public SaleModel(SaleRepository saleRepository, ClientRepository clientRepository, InventoryItemModel inventoryModel) {
+        this.saleRepository = saleRepository;
+        this.clientRepository = clientRepository;
         this.inventoryModel = inventoryModel;
     }
+
     public Sale createSale(Sale sale) {
+        System.out.println("Creating sale for client ID: " + sale);
+
+
+        // Process each sale item
         for (int i = 0; i < sale.getItems().size(); i++) {
             SaleItem item = sale.getItems().get(i);
-            Long id = item.getInventoryItem().getId();
-            InventoryItem inv = inventoryModel.getInventoryItemById(id);
-            Product product = inv.getProduct();
 
-            int soldQuantity = item.getQuantity();
-            int currentQuantity = inv.getQuantity();
-            System.out.println("--" +currentQuantity);
-            System.out.println("--" +soldQuantity);
-            if(currentQuantity == -1) {
-                throw new IllegalArgumentException("Product not found in inventory: " + product.getName());
+            if (item.getInventoryItem() == null) {
+                throw new IllegalArgumentException("Inventory item not associated with sale item at index: " + i);
             }
-            int newQuantity = currentQuantity - soldQuantity;
-            System.out.println("--" +newQuantity);
 
-            // Validate stock availability
-            if (newQuantity < 0) {
+            Long inventoryItemId = item.getInventoryItem().getId();
+            InventoryItem inventoryItem = inventoryModel.getInventoryItemById(inventoryItemId);
+
+            if (inventoryItem == null) {
+                throw new IllegalArgumentException("Inventory item not found for ID: " + inventoryItemId);
+            }
+
+            Product product = inventoryItem.getProduct();
+            int soldQuantity = item.getQuantity();
+            int currentQuantity = inventoryItem.getQuantity();
+
+            System.out.println("Processing sale item:");
+            System.out.println("-- Product: " + product.getName());
+            System.out.println("-- Current Quantity: " + currentQuantity);
+            System.out.println("-- Sold Quantity: " + soldQuantity);
+
+            if (currentQuantity < soldQuantity) {
                 throw new IllegalArgumentException("Not enough stock for product: " + product.getName());
             }
-    
-            inventoryModel.updateProductQuantity(product.getId(), newQuantity);
-    
-            sale.getItems().get(i).setSale(sale);
+
+            int newQuantity = currentQuantity - soldQuantity;
+            try {
+                inventoryModel.updateProductQuantity(product.getId(), newQuantity);
+                System.out.println("-- Inventory updated. New Quantity: " + newQuantity);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to update inventory for product: " + product.getName(), e);
+            }
+
+            item.setSale(sale);
         }
-    
-        return repo.save(sale);
+
+        System.out.println("All sale items processed. Saving the sale...");
+        Sale savedSale = saleRepository.save(sale);
+        System.out.println("Sale saved successfully with ID: " + savedSale.getId());
+
+        return savedSale;
     }
-    
-    public List<Sale> getAllsales() {
-        return repo.findAll();
+
+    public List<Sale> getAllSales() {
+        return saleRepository.findAll();
     }
+
     public List<Sale> getSalesByClientId(Long clientId) {
-        return  repo.findByClientId(clientId) ;
+        return saleRepository.findByClientId(clientId);
     }
+
     public List<Sale> getSalesByDateRange(Date startDate, Date endDate) {
-        return repo.findByDateBetween(startDate, endDate);
+        return saleRepository.findByDateBetween(startDate, endDate);
     }
 
     public long countSalesByClientId(Long clientId) {
-        return repo.countByClientId(clientId);
+        return saleRepository.countByClientId(clientId);
     }
+
     public void deleteSaleById(Long saleId) {
-        repo.deleteById(saleId);
+        saleRepository.deleteById(saleId);
     }
     public Long  getTotalSales() {
-        return repo.count(); // Custom query method from repository
+        return saleRepository.count(); // Custom query method from repository
     }
-    
+    public  Optional<Sale> getSaleById(Long id) {
+        return saleRepository.findById(id);
+    }
 }
+
+

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/sales")
@@ -18,16 +19,25 @@ public class SaleController {
     public SaleController(SaleModel saleModel) {
         this.saleModel = saleModel;
     }
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/all")
     public List<Sale> getSales() {
-        return saleModel.getAllsales();
+        return saleModel.getAllSales();
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping("/add")
     public Sale insertSale(@RequestBody Sale p) {
+        System.out.println("hi");
         
         return saleModel.createSale(p);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteClient(@PathVariable Long id) {
+        saleModel.deleteSaleById(id);
+        return "sale with ID " + id + " deleted successfully!";
+    }
+    @GetMapping("/{saleId}")
+    public Optional<Sale> getSaleById(@PathVariable Long saleId) {
+        return saleModel.getSaleById(saleId);
     }
 }

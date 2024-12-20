@@ -79,6 +79,12 @@ export default {
           },
         });
         alert('Sale added successfully!');
+        for (const item of this.sale.items) {
+          if(item.inventoryItem.quantity === item.quantity){
+          alert("The product "+item.inventoryItem.product.name + ' is no longer availabe in '+this.store.name)
+        }
+        }
+
       } catch (error) {
         alert(error.message);
       }

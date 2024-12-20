@@ -3,11 +3,14 @@ import Inventory from '@/views/inventory.vue';
 import Dashboard from '@/views/dashboard.vue';
 import Customers from '@/views/customers.vue';
 import settings from '@/views/settings.vue';
+
+import Sales from '@/views/sales.vue';
 const routes = [
   { path: '/dashboard', name: 'dashboard', component: Dashboard , meta: { requiresAuth: true }  },
   {path :'/customers', name: 'customers', component: Customers,  meta: { requiresAuth: true } },
   {path :'/settings', name: 'settings', component: settings, meta: { requiresAuth: true } },
-  {path :'/inventory', name: 'Inventory', component: Inventory, meta: { requiresAuth: true } }
+  {path :'/inventory', name: 'Inventory', component: Inventory, meta: { requiresAuth: true } },
+  {path :'/sales', name: 'Sales', component: Sales, meta: { requiresAuth: true } }
 
   // sales and inventory
 ];
