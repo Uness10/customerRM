@@ -26,7 +26,7 @@ public class SaleController {
 
     @PostMapping("/add")
     public Sale insertSale(@RequestBody Sale p) {
-        System.out.println("hi");
+      //  System.out.println("hi");
         
         return saleModel.createSale(p);
     }

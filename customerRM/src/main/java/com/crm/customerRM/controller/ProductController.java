@@ -46,7 +46,6 @@ public class ProductController {
     }
     
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping("/add")
     public Product insertProduct(@RequestBody Product p) {
         // Save the product to the repository

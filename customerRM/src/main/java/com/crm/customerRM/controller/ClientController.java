@@ -25,25 +25,21 @@ public class ClientController {
     public List<Client> getClients() {
         return clientModel.getClients();
     }
-
     // Add a new client
     @PostMapping("/add")
     public Client insertClient(@RequestBody Client client) {
         return clientModel.createClient(client);
     }
-
     // Fetch a client by ID
     @GetMapping("/{id}")
     public Optional<Client> getClientById(@PathVariable Long id) {
         return clientModel.getClientById(id);
     }
-
     // Update a client's details
     @PutMapping("/update")
     public Client updateClient(@RequestBody Client updatedClient) {
         return clientModel.updateClient(updatedClient);
     }
-
     // Delete a client
     @DeleteMapping("/delete/{id}")
     public String deleteClient(@PathVariable Long id) {

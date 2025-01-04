@@ -51,7 +51,7 @@ export default {
         axios.post('http://localhost:8081/api/clients/add', this.client)
           .then(() => {
             this.$emit('close'); // Close the form
-            this.$router.push('/clients'); // Redirect to the clients list
+            location.reload();
           });
       }
     },
